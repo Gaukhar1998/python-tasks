@@ -1,0 +1,199 @@
+Cnt-Sw
+
+·         Configure remote management access including IP addressing and SSH:
+o    Domain is cisco.com
+o    Enable secret ciscoenpass
+o    User CAdmin with password itsasecret
+o    Crypto key length of 1024
+o    SSH version 2, limited to 2 authentication attempts and a 60 second timeout
+o    Plaintext passwords should be encrypted.
+·         Configure, name and assign VLANs. Ports should be manually configured as access ports.
+·         Configure trunking.
+·         Implement port security:
+o    On F0/1, allow 2 MAC addresses that are automatically added to the configuration file when detected. The port should not be disabled, but a syslog message should be captured if a violation occurs.
+o    Disable all other unused ports.
+
+
+Cnt-Sw>en
+Cnt-Sw#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Cnt-Sw(config)#int vlan 60
+Cnt-Sw(config-if)#ip address 192.168.45.34
+% Incomplete command.
+Cnt-Sw(config-if)#ip address 192.168.45.34 255.255.255.240
+Cnt-Sw(config-if)#no shutdown
+Cnt-Sw(config-if)#exit
+Cnt-Sw(config)#ip default-gateway 192.168.45.33
+Cnt-Sw(config)#ip domain-name cisco.com
+Cnt-Sw(config)#enable secret ciscoenpass
+Cnt-Sw(config)#username CAdmin password itsasecret
+Cnt-Sw(config)#crypto key generate rsa
+The name for the keys will be: Cnt-Sw.cisco.com
+Choose the size of the key modulus in the range of 360 to 2048 for your
+  General Purpose Keys. Choosing a key modulus greater than 512 may take
+  a few minutes.
+
+How many bits in the modulus [512]: 1024
+% Generating 1024 bit RSA keys, keys will be non-exportable...[OK]
+
+Cnt-Sw(config)#ip ssh version 2
+Cnt-Sw(config)#ip ssh authentication-retries 2
+*Mar 1 0:11:27.411:  %SSH-5-ENABLED: SSH 1.99 has been enabled 
+Cnt-Sw(config)#ip ssh authentication-retries 2
+Cnt-Sw(config)#ip ssh time-out 60
+Cnt-Sw(config)#service password-encryption
+Cnt-Sw(config)#line vty 0 15
+Cnt-Sw(config-line)#transport input ssh
+Cnt-Sw(config-line)#login local
+Cnt-Sw(config-line)#exit
+Cnt-Sw(config)#vlan 15
+Cnt-Sw(config-vlan)#name Servers
+Cnt-Sw(config-vlan)#vlan 30 
+Cnt-Sw(config-vlan)#name PCs
+Cnt-Sw(config-vlan)#vlan 45
+Cnt-Sw(config-vlan)#name Native
+Cnt-Sw(config-vlan)#vlan 60
+Cnt-Sw(config-vlan)#
+%LINK-5-CHANGED: Interface Vlan60, changed state to up
+
+Cnt-Sw(config-vlan)#vlan 60
+Cnt-Sw(config-vlan)#name Management
+Cnt-Sw(config-vlan)#exit
+Cnt-Sw(config)#int range f0/11-20
+Cnt-Sw(config-if-range)#swi mode access
+Cnt-Sw(config-if-range)#swi access vlan 15
+Cnt-Sw(config-if-range)#int range f0/1-10
+Cnt-Sw(config-if-range)#swi mode access
+Cnt-Sw(config-if-range)#swi access vlan 30
+Cnt-Sw(config-if-range)#int g0/1
+Cnt-Sw(config-if)#swi mode trunk
+Cnt-Sw(config-if)#swi trunk native vlan 45
+Cnt-Sw(config-if)#int f0/1
+Cnt-Sw(config-if)#swi port-security
+Cnt-Sw(config-if)#swi port-security maximum 2
+Cnt-Sw(config-if)#swi port-security mac-address sticky
+Cnt-Sw(config-if)#swi port-security violation restrict
+Cnt-Sw(config-if)#int range f0/21-24, g0/2
+Cnt-Sw(config-if-range)#sh
+
+%LINK-5-CHANGED: Interface FastEthernet0/21, changed state to administratively down
+
+%LINK-5-CHANGED: Interface FastEthernet0/22, changed state to administratively down
+
+%LINK-5-CHANGED: Interface FastEthernet0/23, changed state to administratively down
+
+%LINK-5-CHANGED: Interface FastEthernet0/24, changed state to administratively down
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/2, changed state to administratively down
+Cnt-Sw(config-if-range)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan60, changed state to up
+
+
+
+
+
+
+
+Central
+
+·         Configure inter-VLAN routing.
+·         Configure DHCP services for VLAN 30. Use LAN as the case-sensitive name for the pool.
+·         Implement routing:
+o    Use RIPv2.
+o    Configure one network statement for the entire 192.168.45.0/24 address space.
+o    Disable interfaces that should not send RIPv2 messages.
+o    Configure a default route to the Internet.
+·         Implement NAT:
+o    Configure a standard, one statement ACL number 1. All IP addresses belonging to the 192.168.45.0/24 address space are allowed.
+o    Refer to your documentation and configure static NAT for the File Server.
+o    Configure dynamic NAT with PAT using a pool name of your choice, a /30 mask, and these two public addresses:
+        64.100.32.56 and 64.100.32.57
+NetAdmin
+
+Verify NetAdmin has received full addressing information from Central.
+
+
+Central>en
+Central#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Central(config)#
+Central(config)#int g0/0.15
+Central(config-subif)#encapsulation dot1q 15
+Central(config-subif)#ip address 192.168.45.65 255.255.255.192
+Central(config-subif)#int g0/0.30
+Central(config-subif)#encapsulation dot1q 30
+Central(config-subif)#ip address 192.168.45.129 255.255.255.192
+Central(config-subif)#int g0/0.45
+Central(config-subif)#encapsulation dot1q 45
+Central(config-subif)#ip address 192.168.45.17 255.255.255.240
+Central(config-subif)#int g0/0.60
+Central(config-subif)#encapsulation dot1q 60
+Central(config-subif)#ip address 192.168.45.33 255.255.255.240
+Central(config-subif)#int g0/0.45
+Central(config-subif)#encapsulation dot1q 45 native
+Central(config-subif)#int g0/0
+Central(config-if)#no sh
+
+Central(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/0.15, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0.15, changed state to up
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/0.30, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0.30, changed state to up
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/0.45, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0.45, changed state to up
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/0.60, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0.60, changed state to up
+
+Central(config-if)#exit
+Central(config)#ip dhcp excluded-address 192.168.45.129
+Central(config)#ip dhcp pool LAN
+Central(dhcp-config)#network 192.168.45.128 255.255.255.192
+Central(dhcp-config)#default-router 192.168.45.129
+Central(dhcp-config)#exi
+Central(config)#router rip
+Central(config-router)#version 2
+Central(config-router)#network 192.168.45.0
+Central(config-router)#no auto-summary
+Central(config-router)#passive-interface g0/0.15
+Central(config-router)#passive-interface g0/0.30
+Central(config-router)#passive-interface g0/0.45
+Central(config-router)#passive-interface g0/0.60
+Central(config-router)#passive-interface s0/1/0
+Central(config-router)#exit
+Central(config)#ip route 0.0.0.0 0.0.0.0 s0/1/0 
+%Default route without gateway, if not a point-to-point interface, may impact performance
+Central(config)#access-list 1 permit 192.168.45.0 0.0.0.255
+Central(config)#ip nat inside source static 192.168.45.66 64.100.32.58
+Central(config)#ip nat pool POOL 64.100.32.56 64.100.32.57 netmask 255.255.255.252
+Central(config)#ip nat inside source list 1 pool POOL overload
+Central(config)#int s0/1/0
+Central(config-if)#ip nat outside
+Central(config-if)#int s0/0/0
+Central(config-if)#ip nat inside
+Central(config-if)#int s0/0/1
+Central(config-if)#ip nat inside
+Central(config-if)#int g0/0.15
+Central(config-subif)#ip nat inside
+Central(config-subif)#int g0/0.30
+Central(config-subif)#ip nat inside
+Central(config-subif)#int g0/0.45
+Central(config-subif)#ip nat inside
+Central(config-subif)#int g0/0.60
+Central(config-subif)#ip nat inside
+Central(config-subif)#
+
