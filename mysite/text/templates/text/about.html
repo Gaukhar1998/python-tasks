@@ -1,0 +1,41 @@
+<!-- Loads the path to your static files -->
+{% extends 'text/base.html' %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="container text-center" style="background:gray; margin-top:-2%;height:80%">
+    <div class="container-fluid text-center" style="color:white"><!--style="background-color: #474e5d; color: #ffffff;">-->
+  <h3>What Am I?</h3>
+      <h4>A cryptographic nonce (number used once) to whitelist inline styles in a style-src Content-Security-Policy. The server must generate a unique nonce value each time it transmits a policy. It is critical to provide a nonce that cannot be guessed as bypassing a resource’s policy is otherwise trivial.</h4>
+</div>
+<div class="container-fluid text-center bg-grey">
+  <!--<h2 style="color:white">Portfolio</h2>-->
+  <div class="row text-center">
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://static1.squarespace.com/static/5914d841e6f2e109b2a338f6/t/59c00376bce176b2597343d4/1498249483027/" alt="Paris">
+        <p><strong>Paris</strong></p>
+        <p>Yes, we built Paris</p>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://static1.squarespace.com/static/5914d841e6f2e109b2a338f6/t/59385bd2e6f2e16e6a20705f/1500058908009/Boy_Texting?format=300w" alt="New York">
+        <p><strong>New York</strong></p>
+        <p>We built New York</p>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="https://static1.squarespace.com/static/5914d841e6f2e109b2a338f6/t/59c04bb4d55b417f6036f492/1505774520777/howitworks-06.png?format=300w" alt="San Francisco">
+        <p><strong>San Francisco</strong></p>
+        <p>Yes, San Fran is ours</p>
+      </div>
+    </div>
+</div>
+<div class="container-fluid text-center" style="color:white"> <!--style="background-color: #ffffff;color: #555555;">-->
+  <h3>Where To Find Me?</h3>
+    <h4>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</h4>
+</div>
+    <br/>
+</div>
+{% endblock %}

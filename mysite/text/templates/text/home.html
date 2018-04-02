@@ -1,0 +1,69 @@
+<!-- Loads the path to your static files -->
+{% extends 'text/base.html' %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="container-fluid" style="position:relative;">
+    <img style="height:400px;width:100%;margin-top:-1.5%;-webkit-filter: grayscale(150%); filter: grayscale(150%);" src="http://dougbelshaw.com/blog/wp-content/uploads/2012/01/evernote-book-phone.jpg">
+    <div style="position:absolute;top: 30%; right:5%; color:white;" class="col-sm-5" style="float:right">
+    <h2>TEXTASY - is a application
+    to get out the text from the
+    textbooks by taking a photo
+    from any camera</h2></div>
+</div>
+<div class="container-fluid">
+  <h2 style="text-align:center">ABOUT</h2>
+  <div class="row text-center">
+    <div class="col-sm-6">
+     <div class="col-sm-3">
+      <span style="font-size:70px; padding-top:30%" class="glyphicon glyphicon-off"></span>
+     </div>
+        <div class="col-sm-9 text-left">
+      <h4>Upload a photo</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="col-sm-9 text-right">
+      <h4>Saved documents</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+    </div>
+    <div class="col-sm-2">
+      <span style="font-size:70px; padding-top:30%" class="glyphicon glyphicon-heart"></span>
+        </div>
+</div>
+    </div>
+    <br><br>
+  <div class="row text-center">
+    <div class="col-sm-6">
+        <div class="col-sm-3">
+      <span style="font-size:70px; padding-top:30%" class="glyphicon glyphicon-leaf"></span>
+        </div>
+    <div class="col-sm-9 text-left">
+      <h4>Converted</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+    </div>
+</div>
+    <div class="col-sm-6">
+
+    <div class="col-sm-9 text-right">
+      <h4>Translate</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+    </div>
+    <div class="col-sm-2">
+      <span style="font-size:70px; padding-top:30%" class="glyphicon glyphicon-certificate"></span>
+            </div>
+</div>
+</div>
+    <div class="container-fluid">
+        <iframe width="100%" height="400"
+            src="https://www.youtube.com/embed/tgbNymZ7vqY">
+        </iframe>
+    </div>
+    <div class="container-fluid text-center" style="background: gray; color:white">
+        <h5>During the summer holidays before I headed to university I worked in a secondhand bookshop on </h5>
+        <h5>   Broad Street in Oxford. And then, to help support myself during my MA in Modern History</h5>
+           <h5> I worked in Waterstones bookshop in Newcastle. I love books.</h5><br>
+        <p><a style="color:white" href="{% url 'text:register' %}">REGISTER NOW</a></p>
+    </div>
+</div>
+{% endblock %}
