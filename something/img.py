@@ -35,7 +35,6 @@ src_path = "C:\\Users\\hp\\Desktop\\"
 
 #Print OCR result
 #print (text)
-#C:\Program Files (x86)\Tesseract-OCR
 from PIL import Image
 import pytesseract
 tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
@@ -45,6 +44,5 @@ tessdata_dir_config = 'C:\\Program Files (x86)\\Tesseract-OCR\\tessdata\\configs
 words = pytesseract.image_to_string( Image.open('C:\\Users\\hp\\Desktop\\power.png'), lang='eng', config=tessdata_dir_config)
 f = open('helloworld.txt','w',encoding='utf-8')
 f.write(words)
-#f.write("This is our new text file") 
 f.close()
 print(words)
