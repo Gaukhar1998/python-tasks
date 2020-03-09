@@ -27,6 +27,7 @@ knn = cv2.KNearest()
 knn.train(trainData, responses)
 ret, result, neighbours, dist = knn.find_nearest(testData, k=5)
 
+# Find an accuracy of model to evaluate 
 correct = np.count_nonzero(result == labels)
 accuracy = correct*100.0/10000
 print (accuracy)
