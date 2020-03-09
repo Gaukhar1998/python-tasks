@@ -41,6 +41,10 @@ class State(object):
             rule_string += '*'
         return 'S%d %s -> %s %s' % (self.idx, self.label, rule_string, self.producer)
 
+"""
+Create Earley model to distinguish 
+type of words
+"""
 class Earley:
     def __init__(self, words, grammar, terminals):
         self.chart = [[] for _ in range(len(words) + 1)]
